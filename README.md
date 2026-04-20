@@ -2,7 +2,7 @@
 
 **A high-performance, custom-engineered wireless remote control system featuring 5 proportional PWM channels and 4 digital channels. Built with Arduino Nanos and nRF24L01+ PA/LNA modules for long-range robotics and RC vehicles.**
 
-<img src="ASSETS/88.jpg" width="400" alt=" ">
+<img src="ASSETS/88.png" width="400" alt=" ">
 *(Custom Transmitter and Receiver layouts featuring dual analog joysticks, toggle switches, a single center potentiometer, and haptic buzzer feedback).*
 
 ---
@@ -14,10 +14,13 @@ nRF24-Custom-Transceiver/
 │
 ├── 💻 Firmware/
 │   ├── Transmitter_TX/
-│   │   └── Transmitter_TX.ino    # Reads inputs, packs struct, sends via RF
+│   │   └── Transmitter_TX.cpp    # Reads inputs, packs struct, sends via RF
 │   └── Receiver_RX/
-│       └── Receiver_RX.ino       # Receives struct, drives Hardware/Software PWM & Digital pins
+│       └── Receiver_RX.cpp       # Receives struct, drives Hardware/Software 
 │
+├── 💻 hardware/
+│   └──  SCHEMATIC
+
 ├── 🖼️ Assets/                    # Images of the hardware build
 │
 └── 📄 README.md                  # This documentation file
@@ -36,6 +39,7 @@ This project replaces commercial RC controllers with a custom 2.4GHz ISM band so
 
 ## 🛒 Bill of Materials (Hardware)
 <img src="ASSETS/11.jpg" width="400" alt=" ">
+
 ### Transmitter (TX) Board
 * 1x Arduino Nano
 * 1x nRF24L01+ PA/LNA Module (with Antenna)
@@ -118,7 +122,9 @@ Runaway vehicles are a major risk in custom RC builds. The receiver tracks `last
   }
 ```
 ### 3. State-Change Edge Detection (Haptic Feedback)
+
 <img src="ASSETS/77.jpg" width="400" alt=" ">
+
 Instead of continuous buzzing while a button is held, the transmitter uses state-tracking (`prevJB1`, `prevT1`, etc.) to detect **falling edges**. This ensures the buzzer only emits a crisp, 100ms verification beep exactly when a switch is flipped.
 
 ### 4. RF Optimization for Max Range
