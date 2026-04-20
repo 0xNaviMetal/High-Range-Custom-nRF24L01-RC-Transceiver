@@ -2,7 +2,7 @@
 
 **A high-performance, custom-engineered wireless remote control system featuring 5 proportional PWM channels and 4 digital channels. Built with Arduino Nanos and nRF24L01+ PA/LNA modules for long-range robotics and RC vehicles.**
 
-![TX and RX Boards](image.png)
+<img src="ASSETS/88.jpg" width="400" alt=" ">
 *(Custom Transmitter and Receiver layouts featuring dual analog joysticks, toggle switches, a single center potentiometer, and haptic buzzer feedback).*
 
 ---
@@ -21,7 +21,7 @@ nRF24-Custom-Transceiver/
 ├── 🖼️ Assets/                    # Images of the hardware build
 │
 └── 📄 README.md                  # This documentation file
-
+```
 ## 📋 System Overview & Key Features
 
 This project replaces commercial RC controllers with a custom 2.4GHz ISM band solution. It is optimized for low latency, fail-safe reliability, and hardware flexibility.
@@ -35,7 +35,7 @@ This project replaces commercial RC controllers with a custom 2.4GHz ISM band so
 ---
 
 ## 🛒 Bill of Materials (Hardware)
-
+<img src="ASSETS/11.jpg" width="400" alt=" ">
 ### Transmitter (TX) Board
 * 1x Arduino Nano
 * 1x nRF24L01+ PA/LNA Module (with Antenna)
@@ -53,8 +53,9 @@ This project replaces commercial RC controllers with a custom 2.4GHz ISM band so
 ---
 
 ## 📡 Data Packet & Payload Optimization
-
+<img src="ASSETS/44.jpg" width="400" alt=" ">
 To achieve real-time responsiveness, the payload is packed into a highly optimized **9-byte C-struct**. This prevents radio bottlenecking and ensures lightning-fast transmission times.
+```Cpp
 // 9-Byte Data Payload
 struct Data_Package {
   byte j1PotX;     // Left Joystick X (0-255)
@@ -67,8 +68,10 @@ struct Data_Package {
   byte tSwitch1;   // Left Toggle (0/1)
   byte tSwitch2;   // Right Toggle (0/1)
 };
-## 🔌 Hardware Pin Mapping
+```
 
+## 🔌 Hardware Pin Mapping
+<img src="ASSETS/22.jpg" width="400" alt=" ">
 ### Transmitter (TX) Mapping
 
 | Component | Arduino Pin | Type |
@@ -103,6 +106,7 @@ The Arduino Nano only has 6 hardware PWM pins, some of which conflict with the S
 
 ### 2. Auto-Failsafe Mechanism
 Runaway vehicles are a major risk in custom RC builds. The receiver tracks `lastReceiveTime` using the `millis()` hardware timer. If a packet is missed for more than 1 second, the system triggers `resetData()`, forcing all joysticks to center (`127`) and disabling all digital switches.
+```cpp
   if (radio.available()) {
     radio.read(&data, sizeof(Data_Package));
     lastReceiveTime = millis();
@@ -112,8 +116,9 @@ Runaway vehicles are a major risk in custom RC builds. The receiver tracks `last
   if (millis() - lastReceiveTime > 1000) {
     resetData(); // Return all axes to 127 (neutral)
   }
+```
 ### 3. State-Change Edge Detection (Haptic Feedback)
-
+<img src="ASSETS/77.jpg" width="400" alt=" ">
 Instead of continuous buzzing while a button is held, the transmitter uses state-tracking (`prevJB1`, `prevT1`, etc.) to detect **falling edges**. This ensures the buzzer only emits a crisp, 100ms verification beep exactly when a switch is flipped.
 
 ### 4. RF Optimization for Max Range
